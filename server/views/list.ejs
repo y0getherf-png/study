@@ -24,7 +24,9 @@
 
     <!-- 글 작성 카드 -->
     <div class="card">
-      <h2>글 작성하기</h2>
+     <button type="button" class="btn" id="write-btn">글 작성하기</button>
+
+     <div id="write-form" style="display: none; margin-top: 12px;">
       <form action="/post" method="POST">
         <div class="field">
           <label for="title">제목</label>
@@ -38,6 +40,7 @@
 
         <button type="submit" class="btn">작성 완료</button>
       </form>
+     </div> 
     </div>
 
     <!-- 글 목록 카드 -->
@@ -65,5 +68,20 @@
       <% } %>
     </div>
   </div>
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+      const btn = document.getElementById('write-btn');
+      const formBox = document.getElementById('write-form');
+
+      btn.addEventListener('click', function () {
+        // 현재 숨겨져 있으면 보이게, 보이는 상태면 다시 숨기기
+        if (formBox.style.display === 'none' || formBox.style.display === '') {
+          formBox.style.display = 'block';
+        } else {
+          formBox.style.display = 'none';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
