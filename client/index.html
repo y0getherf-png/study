@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>게시판</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/main.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <h1 id="title_name">게시판 글 작성하기</h1>
+
+    <div class="row">
+      <!-- 회원가입 카드 -->
+      <div class="card">
+        <h2>회원가입</h2>
+
+        <form id="signup-form" action="/register" method="POST">
+          <!-- 1) 처음에 보이는 버튼 -->
+          <button type="button" id="open-signup" class="btn">
+            회원가입
+          </button>
+
+          <!-- 2) 버튼을 누르면 나타날 입력창들 -->
+          <div id="signup-fields">
+            <div class="field">
+              <label for="signup-email">이메일</label>
+              <input type="email" id="signup-email" name="signup_email" placeholder="example@example.com" required />
+            </div>
+
+            <div class="field">
+              <label for="signup-nickname">닉네임</label>
+              <input type="text" id="signup-nickname" name="signup_nickname" placeholder="닉네임을 입력하세요" required />
+            </div>
+
+            <div class="field">
+              <label for="signup-password">비밀번호</label>
+              <input type="password" id="signup-password" name="signup_password" placeholder="비밀번호를 입력하세요" required />
+            </div>
+
+            <div class="field">
+              <label for="signup-password2">비밀번호 확인</label>
+              <input type="password" id="signup-password2" name="signup_password2" placeholder="비밀번호를 한번 더 입력하세요" required />
+            </div>
+
+            <button type="submit" class="btn">
+              회원가입 완료
+            </button>
+        
+            <p class="sub-text">
+              ※ 아직은 서버와 연결되지 않은 예제입니다.
+            </p>
+          </div>
+        </form>
+            <!-- ★ 회원가입 완료 후에 보여줄 메시지 -->
+          <p id="signup-complete" class="comp-text" style="display: none;">
+          회원가입이 완료되었습니다. <br><br>로그인 해주세요.
+          </p>
+      </div>
+
+      <!-- 로그인 카드 -->
+      <div class="card">
+        <h2>로그인</h2>
+
+        <form id="login-form" action="/login" method="POST">
+          <div class="field">
+            <label for="login-email">이메일</label>
+            <input type="email" id="login-email" name="login_email" placeholder="example@example.com" required />
+          </div>
+
+          <div class="field">
+            <label for="login-password">비밀번호</label>
+            <input type="password" id="login-password" name="login_password" placeholder="비밀번호를 입력하세요" required />
+          </div>
+
+          <button type="submit" class="btn">
+            로그인
+          </button>
+
+          <p class="sub-text">
+            ※ 이 폼도 예제이며 아직 서버와 연결되어 있지 않습니다.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const openBtn = document.getElementById('open-signup');
+    const fields = document.getElementById('signup-fields');
+    const signupCompleteMsg = document.getElementById('signup-complete');
+    // "회원가입" 버튼을 누르면 입력창을 보여준다
+    openBtn.addEventListener('click', () => {
+        if (fields.style.display === 'block'){
+            fields.style.display = 'none';   // 숨겨진 영역 보이기
+            openBtn.textContent = '회원가입';   // 처음 버튼은 숨기기  
+        }else {
+            fields.style.display = 'block';   // 숨겨진 영역 보이기
+            openBtn.textContent = '돌아가기';   // 처음 버튼은 숨기기   
+        }
+    });
+
+  // ★ 페이지가 로드될 때, URL에 registered=1 이 있는지 확인
+  const params = new URLSearchParams(window.location.search);
+  const isRegistered = params.get('registered');
+  const needLogin = params.get('login')
+
+  if (needLogin === 'required') {
+    const title = document.getElementById('title_name');
+    title.innerHTML = '로그인 해주세요';
+    title.style.color = 'red';
+}
+
+  if (isRegistered === '1') {
+    if (fields) fields.style.display = 'none';
+    if (openBtn) openBtn.style.display = 'none';
+
+    if (signupCompleteMsg) {
+      signupCompleteMsg.style.display = 'block';
+    }
+  }
+  </script>
+</body>
+</html>

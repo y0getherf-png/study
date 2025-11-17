@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>게시판 - 글 수정</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/main.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <h1>게시판</h1>
+
+    <div class="card">
+      <% if (user) { %>
+        <p><strong><%= user.nickname %></strong>님, 글을 수정합니다.</p>
+      <% } %>
+    </div>
+
+    <div class="card card-write">
+      <div class="card-write-header">
+        <h2>✏️ 글 수정하기</h2>
+        <p class="sub-text">내용을 수정한 후 "수정 완료" 버튼을 눌러주세요.</p>
+      </div>
+
+      <!-- method-override 를 이용해 PUT 요청으로 보냄 -->
+      <form action="/post/<%= post._id %>?_method=PUT" method="POST">
+        <div class="field">
+          <label for="title">제목</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            value="<%= post.title %>"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="content">내용</label>
+          <textarea
+            id="content"
+            name="content"
+            rows="6"
+            required
+          ><%= post.content %></textarea>
+        </div>
+
+        <div class="write-actions">
+          <a href="/detail/<%= post._id %>" class="sub-text">&larr; 취소하고 돌아가기</a>
+          <button type="submit" class="btn">수정 완료</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

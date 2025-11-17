@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>게시판 - 글 상세</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/main.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <h1>게시판</h1>
+
+    <!-- 상단 유저 정보 -->
+    <div class="card">
+      <% if (user) { %>
+        <p><strong><%= user.nickname %></strong>님 환영합니다.</p>
+        <form action="/logout" method="POST" style="margin-top: 8px;">
+          <button type="submit" class="btn">로그아웃</button>
+        </form>
+      <% } else { %>
+        <p>로그인이 필요합니다.</p>
+      <% } %>
+    </div>
+
+    <!-- 글 상세 카드 -->
+    <div class="card">
+      <h2><%= post.title %></h2>
+      <p class="sub-text">
+        작성자: <%= post.authorName %> /
+        작성일: <%= new Date(post.createdAt).toLocaleString('ko-KR') %>
+      </p>
+      <hr />
+      <p><%= post.content %></p>
+    </div>
+
+    <!-- 수정 / 삭제 버튼 카드 -->
+    <div class="card">
+      <h3>글 관리</h3>
+
+      <div class="write-actions">
+        <!-- 수정 페이지로 이동 -->
+        <a href="/post/<%= post._id %>/edit" class="btn" style="text-align:center; text-decoration:none; display:inline-block;">
+          수정하기
+        </a>
+
+        <!-- 삭제: method-override 사용해서 DELETE로 -->
+        <form action="/post/<%= post._id %>?_method=DELETE" method="POST" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+          <button type="submit" class="btn" style="background:#dc2626;">
+            삭제하기
+          </button>
+        </form>
+      </div>
+
+      <p class="sub-text" style="margin-top:8px;">
+        * 수정하기를 누르면 글 수정 화면으로 이동합니다.
+      </p>
+
+      <a href="/list" class="sub-text">&larr; 목록으로 돌아가기</a>
+    </div>
+  </div>
+</body>
+</html>

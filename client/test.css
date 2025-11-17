@@ -1,0 +1,52 @@
+/* 상단 유저 카드 꾸미기 */
+.user-card {
+  background: #f9fafb;
+  border-left: 4px solid #2563eb;
+}
+
+.user-card-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 동그란 프로필 아이콘 */
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: #2563eb;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+/* 환영 텍스트 */
+.user-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.user-welcome {
+  margin: 0;
+}
+
+/* 로그아웃 버튼을 오른쪽 끝으로 */
+.logout-form {
+  margin-left: auto;
+}
+
+/* 로그아웃 버튼 색 살짝 다르게 */
+.btn.btn-logout {
+  background: #ef4444;
+  border-color: #ef4444;
+}
+
+.btn.btn-logout:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}
