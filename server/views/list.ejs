@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/main.css" />
 </head>
 <body>
-  <div class="wrapper">
+  <div id="app" class="wrapper">
     <h1>게시판</h1>
 
     <!-- 상단 유저 정보 / 로그아웃 -->
@@ -24,18 +24,37 @@
 
     <!-- 글 작성 카드 -->
     <div class="card">
-     <button type="button" class="btn" id="write-btn">글 작성하기</button>
+     <button
+        type="button"
+        class="btn"
+        id="write-btn"
+        @click="toggleWrite"
+      >
+      {{ showWrite ? '작성 폼 닫기' : '글 작성하기' }}
+    </button>
 
-     <div id="write-form" style="display: none; margin-top: 12px;">
+     <div id="write-form" v-show="showWrite" style="margin-top: 12px;">
       <form action="/post" method="POST">
         <div class="field">
           <label for="title">제목</label>
-          <input type="text" id="title" name="title" placeholder="제목을 입력하세요" required />
+         <input
+              type="text"
+              id="title"
+              name="title"
+              placeholder="제목을 입력하세요"
+              required
+            />
         </div>
 
         <div class="field">
           <label for="content">내용</label>
-          <textarea id="content" name="content" placeholder="내용을 입력하세요" rows="5" required></textarea>
+          <textarea
+              id="content"
+              name="content"
+              placeholder="내용을 입력하세요"
+              rows="5"
+              required
+            ></textarea>
         </div>
 
         <button type="submit" class="btn">작성 완료</button>
@@ -68,20 +87,19 @@
       <% } %>
     </div>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
   <script>
-      document.addEventListener('DOMContentLoaded', function () {
-      const btn = document.getElementById('write-btn');
-      const formBox = document.getElementById('write-form');
-
-      btn.addEventListener('click', function () {
-        // 현재 숨겨져 있으면 보이게, 보이는 상태면 다시 숨기기
-        if (formBox.style.display === 'none' || formBox.style.display === '') {
-          formBox.style.display = 'block';
-        } else {
-          formBox.style.display = 'none';
+    new Vue({
+      el: '#app',
+      data: {
+        showWrite: false
+      },
+      methods: {
+        toggleWrite() {
+          this.showWrite = !this.showWrite;
         }
-      });
-    });
+      }
+    })
   </script>
 </body>
 </html>
