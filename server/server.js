@@ -54,20 +54,40 @@ app.get('/', (req , res)=> {
 //회원가입
 
 app.post('/register', async (req, res) => {
-  let hash = await bcrypt.hash(req.body.signup_password, 10)
-  let hash2 = await bcrypt.hash(req.body.signup_password2, 10)
-  try{
-  await db.collection('user').insertOne({
-    username : req.body.signup_email,
-    nickname : req.body.signup_nickname, 
-    password : hash,
-    password2 : hash2
-  });
-  console.log('user 등록 완료', req.body.signup_email);
-  return res.redirect('/?registered=1');
-  }catch (err){
-    console.error('회원가입 중 에러', err);
-    res.status(500).send('실패하였습니다');
+  const {
+    signup_email,
+    signup_nickname,
+    signup_password,
+    signup_password2,
+  } = req.body;
+  
+  try {
+    if (!signup_email || !signup_nickname || !signup_password || !signup_password2) {
+      return res.status(400).send('모든 값을 입력해주세요')
+      }
+    if (signup_password !== signup_password2) {
+      return res.status(400).send('비밀번호와 비밀번호 확인이 일치하지 않습니다')
+    }
+    const existingUser = await db.collection('user').findOne({
+      username: signup_email
+    })
+    if (existingUser) {
+      return res.status(400).send('이미 가입된 이메일 입니다')
+    }
+    const hash = await bcrypt.hash(signup_password, 10)
+
+    await db.collection('user').insertOne({
+      username: signup_email,
+      nickname: signup_nickname,
+      password: hash,
+      createdAt: new Date()
+    })
+
+    console.log('user 등록 완료', signup_email)
+    return res.redirect('/?registered=1')
+  } catch (err) {
+    console.error('회원가입 중 에러', err)
+    return res.status(500).send('회원 가입 중 오류가 발생하였습니다')
   }
 });
 
