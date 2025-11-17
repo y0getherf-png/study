@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -9,6 +11,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt') 
 const MongoStore = require('connect-mongo')
 
+
 app.set('view engine','ejs')
 app.set('views', path.join(__dirname, 'views')) //안적어도 됨 views 폴더가 기본값이라서
 app.use(express.static(path.join(__dirname, '..','client')));
@@ -16,23 +19,26 @@ app.use(methodOverride('_method'))
 app.use(express.urlencoded({extended:true}))
 app.use(passport.initialize())
 app.use(session({
-  secret: '암호화에 쓸 비번',
+  secret: process.env.SESSION_SECRET,
   resave : false,
   saveUninitialized : false,
   cookie : {maxAge : 60 * 60 * 1000},
   store : MongoStore.create({
-     mongoUrl: 'mongodb+srv://y0getherf_db_user:lol123.321lol@cluster0.io3gfbf.mongodb.net/?appName=Cluster0', 
-     dbName: 'forum'
+     mongoUrl: process.env.MONGO_URL, 
+     dbName: process.env.DB_NAME
      })
 }))
 app.use(passport.session())
 app.use(express.json())
 
 let db
-const url = 'mongodb+srv://y0getherf_db_user:lol123.321lol@cluster0.io3gfbf.mongodb.net/?appName=Cluster0'
+const url = process.env.MONGO_URL; 
+const dbName = process.env.DB_NAME;
+const PORT = process.env.PORT || 8080;
+
 new MongoClient(url).connect().then((client)=>{
   console.log('DB연결성공')
-  db = client.db('forum') 
+  db = client.db(dbName) 
   app.listen(8080, () => {
     console.log('http://localhost:8080 에서 서버 실행중')
 })
