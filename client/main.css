@@ -113,7 +113,6 @@
 
     /* 처음에는 회원가입 입력창 숨기기 */
     #signup-fields {
-      display: none;
       margin-top: 16px;
     }
 
